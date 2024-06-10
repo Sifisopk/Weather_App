@@ -23,3 +23,10 @@ Unfortunately, I was unable to make the code work when it came to the calculatio
 app icon
 
 ![Screenshot (35)](https://github.com/Sifisopk/Weather_App/assets/162301784/77154d17-7e33-42dc-970b-140084a2603b)
+
+github
+
+![Screenshot (4)](https://github.com/Sifisopk/Weather_App/assets/162301784/b7d6884c-2c74-4576-a717-4e417cf7043e)
+![Screenshot (5)](https://github.com/Sifisopk/Weather_App/assets/162301784/654287cb-b184-458f-bb42-0778ef0974d4)
+
+
