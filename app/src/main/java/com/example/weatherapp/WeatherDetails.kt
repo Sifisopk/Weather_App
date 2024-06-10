@@ -6,46 +6,51 @@ import android.widget.Button
 import android.widget.TextView
 
 class WeatherDetails : AppCompatActivity() {
-    private lateinit var dailyTemperatures: Array<Double?>
+    private lateinit var minTemps: Array<Int?>
+    private lateinit var maxTemps: Array<Int?>
+    private lateinit var conditions: Array<String?>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_weather_details)
 
 
-        val backToMainScreen = findViewById<Button>(R.id.backToMainBtn)
-
-        dailyTemperatures = intent.getSerializableExtra("dailyTemperatures") as Array<Double?>
-
-        displayDetails()
-        backToMainScreen.setOnClickListener {
+        val backBtn = findViewById<Button>(R.id.backToMainBtn)
+        backBtn.setOnClickListener {
             finish()
         }
+
+        minTemps = intent.getSerializableExtra("minTemps") as Array<Int?>
+        maxTemps = intent.getSerializableExtra("maxTemps") as Array<Int?>
+        conditions = intent.getSerializableExtra("conditions") as Array<String?>
+
+        displayDetails()
     }
 
-
     private fun displayDetails() {
-            val days = arrayOf("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
-            val details = StringBuilder()
+        val days = arrayOf("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
+        val details = StringBuilder()
 
-            var total = 0.0
-            var count = 0
+        var totalMin = 0
+        var totalMax = 0
+        var count = 0
 
-            for (i in dailyTemperatures.indices) {
-                details.append("${days[i]}: ${dailyTemperatures[i] ?: 0.0} celcius\n")
-                if (dailyTemperatures[i] != null) {
-                    total += dailyTemperatures[i]!!
-                    count++
-                }
+        for (i in days.indices) {
+            details.append("${days[i]}: Min: ${minTemps[i]}°, Max: ${maxTemps[i]}°, Condition: ${conditions[i]}\n")
+            if (minTemps[i] != null && maxTemps[i] != null) {
+                totalMin += minTemps[i]!!
+                totalMax += maxTemps[i]!!
+                count++
             }
+        }
 
+        val averageMin = if (count > 0) totalMin / count else 0
+        val averageMax = if (count > 0) totalMax / count else 0
 
-            val detailsView = findViewById<TextView>(R.id.detailsView)
-            val averageView = findViewById<TextView>(R.id.averageView)
+        val detailsView = findViewById<TextView>(R.id.detailsView)
+        val averageView = findViewById<TextView>(R.id.averageView)
 
-
-            val average = if (count > 0) total / count else 0.0
-            detailsView.text= details.toString()
-            averageView.text = "Average screen time: %.2f hours".format(average)
+        detailsView.text = details.toString()
+        averageView.text = "Average Min Temp: $averageMin°, Average Max Temp: $averageMax°"
 
         }
 }

@@ -24,6 +24,6 @@
     <string name="DAY7">SUNDAY</string>
     <string name="daily_temperature_details">Daily Temperature Details</string>
     <string name="temp_details">Temp Details</string>
-    <string name="average_temp">Average Temp</string>
+    <string name="average_temp">Average Temperature</string>
     <string name="back_to_main_screen">Back To Main Screen</string>
 </resources>

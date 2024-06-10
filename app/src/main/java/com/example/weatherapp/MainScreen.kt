@@ -1,5 +1,6 @@
 package com.example.weatherapp
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -9,80 +10,88 @@ import android.widget.Toast
 
 class MainScreen : AppCompatActivity() {
 
-    private lateinit var dailyTemperatures: Array<Double?>
-    private lateinit var editTexts: Array<EditText>
+    private lateinit var editTextsMin: Array<EditText>
+    private lateinit var editTextsMax: Array<EditText>
+    private lateinit var editTextsCondition: Array<EditText>
+    private var minTemps: Array<Int?> = arrayOfNulls(7)
+    private var maxTemps: Array<Int?> = arrayOfNulls(7)
+    private var conditions: Array<String?> = arrayOfNulls(7)
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_screen)
 
-        val editTextMonday = findViewById<EditText>(R.id.editTextMonday)
-        val editTextTuesday = findViewById<EditText>(R.id.editTextTuesday)
-        val editTextWednesday = findViewById<EditText>(R.id.editTextWednesday)
-        val editTextThursday = findViewById<EditText>(R.id.editTextThursday)
-        val editTextFriday = findViewById<EditText>(R.id.editTextFriday)
-        val editTextSaturday = findViewById<EditText>(R.id.editTextSaturday)
-        val editTextsSunday = findViewById<EditText>(R.id.editTextSunday)
-        val clearBtn = findViewById<Button>(R.id.clearBtn)
-        val viewWeatherBtn = findViewById<Button>(R.id.viewWeatherBtn)
 
-        // editTexts for entering the temperatures
-        editTexts = arrayOf(
-            editTextMonday,
-            editTextTuesday,
-            editTextWednesday,
-            editTextThursday,
-            editTextFriday,
-            editTextSaturday,
-            editTextsSunday
+        editTextsMin = arrayOf(
+            findViewById(R.id.mondayMinTemp)
         )
 
-        dailyTemperatures = arrayOfNulls(editTexts.size)
+        editTextsMax = arrayOf(
+            findViewById(R.id.mondayMaxTemp)
+        )
 
-        // code for linking the two activities
-        viewWeatherBtn.setOnClickListener{
-            intent = Intent(this,WeatherDetails::class.java)
-            startActivity(intent)
-        }
 
-        clearBtn.setOnClickListener {
-            clearData()
+        editTextsCondition = arrayOf(
+          findViewById(R.id.mondaycondition)
 
-            viewWeatherBtn.setOnClickListener {
-                if (saveData()) {
-                    val intent = Intent(this, WeatherDetails::class.java)
-                    intent.putExtra("dailyTemperatures", dailyTemperatures)
-                    startActivity(intent)
-                }
+        )
+
+        findViewById<Button>(R.id.saveBtn).setOnClickListener {
+            if (saveData()) {
+                Toast.makeText(this, "Data saved", Toast.LENGTH_SHORT).show()
             }
         }
 
-    }
+        findViewById<Button>(R.id.clearBtn).setOnClickListener {
+            clearData()
+        }
 
+        findViewById<Button>(R.id.viewWeatherBtn).setOnClickListener {
+            if (saveData() && isDataComplete()) {
+                val intent = Intent(this, WeatherDetails::class.java)
+                intent.putExtra("minTemps", minTemps)
+                intent.putExtra("maxTemps", maxTemps)
+                intent.putExtra("conditions", conditions)
+                startActivity(intent)
+            } else {
+                Toast.makeText(this, "Please fill all fields correctly.", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
 
     private fun clearData() {
-        for (editText in editTexts) {
-            editText.text.clear()
-        }
-        dailyTemperatures.fill(null)
+        editTextsMin.forEach { it.text.clear() }
+        editTextsMax.forEach { it.text.clear() }
+        editTextsCondition.forEach { it.text.clear() }
+        minTemps.fill(null)
+        maxTemps.fill(null)
+        conditions.fill(null)
     }
 
-
     private fun saveData(): Boolean {
-        for (i in editTexts.indices) {
-            val text = editTexts[i].text.toString()
-            if (text.isNotBlank()) {
+        for (i in editTextsMin.indices) {
+            val minText = editTextsMin[i].text.toString()
+            val maxText = editTextsMax[i].text.toString()
+            val conditionText = editTextsCondition[i].text.toString()
+            if (minText.isNotBlank() && maxText.isNotBlank() && conditionText.isNotBlank()) {
                 try {
-                    dailyTemperatures[i] = text.toDouble()
+                    minTemps[i] = minText.toInt()
+                    maxTemps[i] = maxText.toInt()
+                    conditions[i] = conditionText
                 } catch (e: NumberFormatException) {
                     Toast.makeText(this, "Please enter valid numbers.", Toast.LENGTH_SHORT).show()
                     return false
                 }
             } else {
-                dailyTemperatures[i] = 0.0
+                Toast.makeText(this, "Please fill all fields.", Toast.LENGTH_SHORT).show()
+                return false
             }
         }
         return true
+    }
 
+    private fun isDataComplete(): Boolean {
+        return minTemps.all { it != null } && maxTemps.all { it != null } && conditions.all { it != null }
 
     }
 }
