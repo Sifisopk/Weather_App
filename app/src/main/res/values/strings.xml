@@ -1,3 +1,29 @@
 <resources>
     <string name="app_name">weatherApp</string>
+    <string name="weather_app">Weather App</string>
+    <string name="name">NAME</string>
+    <string name="sifiso">SIFISO</string>
+    <string name="surname">SURNAME</string>
+    <string name="khausela">KHAUSELA</string>
+    <string name="exit_app">Exit App</string>
+    <string name="main_screen">Main Screen</string>
+    <string name="monday" />
+    <string name="Tuesday" />
+    <string name="Wednesday" />
+    <string name="Thursday" />
+    <string name="Friday" />
+    <string name="Saturday" />
+    <string name="Sunday" />
+    <string name="Title"> Daily Temperatures</string>
+    <string name="DAY1">MONDAY</string>
+    <string name="DAY2">TUESDAY</string>
+    <string name="DAY3">WEDNESDAY</string>
+    <string name="DAY4">THURSDAY</string>
+    <string name="DAY5">FRIDAY</string>
+    <string name="DAY6">SATURDAY</string>
+    <string name="DAY7">SUNDAY</string>
+    <string name="daily_temperature_details">Daily Temperature Details</string>
+    <string name="temp_details">Temp Details</string>
+    <string name="average_temp">Average Temp</string>
+    <string name="back_to_main_screen">Back To Main Screen</string>
 </resources>
